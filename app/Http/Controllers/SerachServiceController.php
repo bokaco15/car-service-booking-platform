@@ -11,6 +11,7 @@ class SerachServiceController extends Controller
 {
     public function search(SearchServiceRequest $request)
     {
+        //uraditi dependency injections i napraviti repository za searchService
         $services = Service::with('offers')
             ->where('city', 'LIKE', '%'.$request->city.'%')
             ->whereHas('offers', function ($query) use ($request) {
@@ -23,8 +24,6 @@ class SerachServiceController extends Controller
         }
 
         return view('service.search-show', compact('services'));
-
-
 
     }
 }
