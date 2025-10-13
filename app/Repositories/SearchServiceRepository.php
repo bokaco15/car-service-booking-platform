@@ -16,7 +16,7 @@ class SearchServiceRepository
     {
         return $this->serviceModel->with('offers')
             ->where('city', 'LIKE', '%'.$request->city.'%')
-            ->whereHas('offers', function ($query) use ($request) {
+            ->WhereHas('offers', function ($query) use ($request) {
                 $query->where('name', 'LIKE', '%'.$request->service_type.'%');
             })->get();
     }

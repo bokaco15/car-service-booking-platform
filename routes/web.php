@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SerachServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,16 @@ require __DIR__.'/auth.php';
 Route::view('/search', 'service.search')->name('service.search.blade');
 Route::post('/search', [SerachServiceController::class, 'search'])->name('service.search');
 
+//CRUD FOR SERVICES / samo owner moze da doda servis!
+    //add
+Route::view('/service/add', 'service.add')->name('service.add');
+Route::post('/service/add', [ServiceController::class, 'add'])->name('service.add');
+    //all services/za admine crud
+Route::get('/service/all', [ServiceController::class, 'all'])->name('service.all');
+    //show / mogu svi da vide
+Route::get('/service/{service}', [ServiceController::class, 'show'])->name('service.show');
+// update / admin crud
+Route::get('/service/edit/{service}', [ServiceController::class, 'edit'])->name('service.edit');
+Route::post('/service/update/{service}', [ServiceController::class, 'update'])->name('service.update');
+// delete/admin/crud
+Route::get('/service/delete/{service}', [ServiceController::class,'delete'])->name('service.delete');
