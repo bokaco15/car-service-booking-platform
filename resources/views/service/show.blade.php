@@ -54,4 +54,22 @@
     <a href="{{route('workingHours.add', $service->id)}}">Dodaj termine radnog vremena</a>
 @endif
 
+<hr>
+
+{{--Do ovde sam stao!!!--}}
+
+<h3>Rezervisi termin!</h3>
+<form action="" method="post">
+    <select>
+        @foreach($service->offers as $offer)
+            <option value="{{$offer->id}}">{{$offer->name}}</option>
+        @endforeach
+    </select>
+    <label for="start_at">Start at:</label>
+    <input type="time" name="start_at" id="">
+    <label for="start_at">End at:</label>
+    <input type="time" name="end_at" id="">
+    <button>Rezervisi!</button>
+</form>
+
 
