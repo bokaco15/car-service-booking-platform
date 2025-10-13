@@ -10,7 +10,7 @@ pocetna stilizacija
             {{$offer->name}}{{$loop->last ? '.' : ', '}}
         @endforeach
     </p>
-
+    <a href="{{route('service.show', $service->id)}}">Prikazi servis</a>
     <hr>
 
 @endforeach

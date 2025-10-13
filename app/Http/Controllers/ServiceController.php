@@ -29,7 +29,7 @@ class ServiceController extends Controller
 
     public function all()
     {
-        $services = Service::all();
+        $services = Service::paginate(10, '*', 'page');
         return view('service.all', compact('services'));
     }
 

@@ -14,11 +14,11 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Factory::create('sr_Latn_RS');
+        $faker = Factory::create();
 
         for($i = 0 ; $i < 50; $i++) {
             Service::create([
-                'user_id' => $faker->numberBetween(1, 50),
+                'user_id' => 1,
                 'name' => $faker->company(),
                 'city' => $faker->city(),
                 'description' => $faker->paragraph(),
