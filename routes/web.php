@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SerachServiceController;
@@ -63,4 +64,9 @@ Route::get('/service/woriking-hours/edit/{service}', [WorkingHoursController::cl
 Route::post('/service/working-hours/update/{service}', [WorkingHoursController::class, 'update'])->name('workingHours.update');
 
 
-
+//Bookings
+Route::post('/service/booking/insert', [BookingController::class, 'insert'])->name('booking.insert');
+Route::get('/service/booking/show/{service}', [BookingController::class, 'show'])->name('booking.show');
+Route::get('/service/booking/edit/{booking}', [BookingController::class, 'edit'])->name('booking.edit');
+Route::post('/service/booking/update/{booking}', [BookingController::class, 'update'])->name('booking.update');
+Route::get('/service/booking/delete/{booking}', [BookingController::class, 'delete'])->name('booking.delete');

@@ -58,8 +58,12 @@
 
 {{--Do ovde sam stao!!!--}}
 
+
+{{--bilo ko moze rezervisat--}}
 <h3>Rezervisi termin!</h3>
-<form action="" method="">
+<form action="{{route('booking.insert')}}" method="POST">
+    @csrf
+    <input type="hidden" name="service_id" value="{{$service->id}}">
     <select name="service_offering_id">
         @foreach($service->offers as $offer)
             <option value="{{$offer->id}}">{{$offer->name}}</option>
@@ -69,7 +73,16 @@
     <input type="time" name="start_at" id="">
     <label for="start_at">End at:</label>
     <input type="time" name="end_at" id="">
-    <button>Rezervisi!</button>
+    <button>Rezervisi</button>
 </form>
 
+@if(session('booking_success'))
+    <p>{{session('booking_success')}}</p>
+@endif
 
+
+{{--Prikaz rezervacija admin i owner mogu vidjeti--}}
+
+<hr>
+
+<a href="{{route('booking.show', $service->id)}}">Pogledaj rezervacije</a>

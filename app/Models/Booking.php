@@ -15,4 +15,15 @@ class Booking extends Model
         'end_at',
         'status'
     ];
+
+    public function serviceOffering()
+    {
+        return $this->belongsTo(ServiceOffering::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
 }
