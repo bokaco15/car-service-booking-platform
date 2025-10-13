@@ -59,8 +59,8 @@
 {{--Do ovde sam stao!!!--}}
 
 <h3>Rezervisi termin!</h3>
-<form action="" method="post">
-    <select>
+<form action="" method="">
+    <select name="service_offering_id">
         @foreach($service->offers as $offer)
             <option value="{{$offer->id}}">{{$offer->name}}</option>
         @endforeach
