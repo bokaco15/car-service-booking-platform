@@ -12,13 +12,12 @@
 @endif
 
 {{--Ako je Auth::user()->role('admin' / 'owner')--}}
-<a href="{{route('serviceOffering.add', $service->id)}}">Dodaj usluge</a>
+<a href="{{route('serviceOffering.add', $service->id)}}">Dodaj usluge</a> <br>
 
 
 <table border="1" cellpadding="8" cellspacing="0">
     <thead>
     <tr>
-
         <th>Naziv usluge</th>
         <th>Trajanje (min)</th>
         <th>Cena</th>
@@ -39,3 +38,20 @@
     @endforeach
     </tbody>
 </table>
+
+{{--@dd($service)--}}
+
+@if(count($service->working_hours) == 7)
+    @foreach($service->working_hours as $wh)
+        @if($wh->opens_at == null)
+            {{$wh->id}} {{$wh->day_of_week}}: ne radimo <br>
+        @else
+            {{$wh->id}} {{$wh->day_of_week}}: {{$wh->opens_at}}h - {{$wh->closes_at}}h <br>
+        @endif
+    @endforeach
+    <a href="{{route('workingHours.edit', $service->id)}}">Izmeni termine</a>
+@else
+    <a href="{{route('workingHours.add', $service->id)}}">Dodaj termine radnog vremena</a>
+@endif
+
+

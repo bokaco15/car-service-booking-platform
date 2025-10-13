@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SerachServiceController;
 use App\Http\Controllers\ServiceOfferingController;
+use App\Http\Controllers\WorkingHoursController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,3 +53,14 @@ Route::post('/service/offering/add/{offer}', [ServiceOfferingController::class, 
 Route::get('service/offering/delete/{offer}', [ServiceOfferingController::class, 'delete'])->name('serviceOffering.delete');
 Route::get('service/offering/edit/{offer}', [ServiceOfferingController::class, 'edit'])->name('serviceOffering.edit');
 Route::post('service/offering/update/{offer}', [ServiceOfferingController::class, 'update'])->name('serviceOffering.update');
+
+
+//WORKING HOURS
+    //OWNER-ADMIN
+Route::get('/service/working-hours/add/{service}', [WorkingHoursController::class, 'add'])->name('workingHours.add');
+Route::post('/service/working-hours/insert', [WorkingHoursController::class, 'insert'])->name('workingHours.insert');
+Route::get('/service/woriking-hours/edit/{service}', [WorkingHoursController::class, 'edit'])->name('workingHours.edit');
+Route::post('/service/working-hours/update/{service}', [WorkingHoursController::class, 'update'])->name('workingHours.update');
+
+
+
