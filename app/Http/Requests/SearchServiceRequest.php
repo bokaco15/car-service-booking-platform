@@ -22,8 +22,8 @@ class SearchServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'city'=>'string|max:50',
-            'service_type'=>'string|max:50'
+            'city'=>'nullable|string|max:50',
+            'service_type'=>'nullable|integer|max:50'
         ];
     }
 }
