@@ -30,7 +30,7 @@ class BookingController extends Controller
 
     public function show(Service $service)
     {
-        $bookings = Booking::with('service', 'serviceOffering')->where('service_id', $service->id)->get();
+        $bookings = Booking::with('service', 'serviceOffering', 'client')->where('service_id', $service->id)->get();
         $service_name=$service->name;
         $counter = 0;
         if ($bookings->isEmpty()) {
