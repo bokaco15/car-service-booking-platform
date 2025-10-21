@@ -17,15 +17,15 @@ class ServiceOfferingController extends Controller
         $this->serviceOfferingRepo = new ServiceOfferingRepository();
     }
 
-    public function add(Service $offer)
+    public function add(Service $service)
     {
-        return view('serviceOffering.add', compact('offer'));
+        return view('serviceOffering.add', compact('service'));
     }
 
-    public function insert(ServiceOfferingAddRequest $request, Service $offer)
+    public function insert(ServiceOfferingAddRequest $request, Service $service)
     {
-        $this->serviceOfferingRepo->insert($request, $offer);
-        return redirect()->route('service.show', $offer->id)->with('success', 'You have been successfully added an offer');
+        $this->serviceOfferingRepo->insert($request, $service);
+        return redirect()->route('service.show', $service->id)->with('success', 'You have been successfully added an offer');
     }
 
     public function delete(ServiceOffering $offer)

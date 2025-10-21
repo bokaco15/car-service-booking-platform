@@ -57,4 +57,13 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class, 'client_id', 'id');
     }
 
+
+    public function hasRole($role)
+    {
+        if ($this->role != $role) {
+            return false;
+        }
+        return true;
+    }
+
 }

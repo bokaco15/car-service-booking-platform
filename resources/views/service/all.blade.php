@@ -32,6 +32,8 @@
                             <a href="{{ route('service.show', $service->id) }}" class="btn btn-outline-secondary btn-sm">
                                 Prikaži
                             </a>
+                            @auth
+                            @if($service->ownerAndAdminCanView(auth()->user()->id))
                             <a href="{{ route('service.edit', ['service' => $service->id]) }}" class="btn btn-warning btn-sm">
                                 Ažuriraj
                             </a>
@@ -40,6 +42,8 @@
                                onclick="return confirm('Da li sigurno želiš da obrišeš ovaj servis?')">
                                 Obriši
                             </a>
+                            @endif
+                            @endauth
                         </div>
                     </div>
                 </div>

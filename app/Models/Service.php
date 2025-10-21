@@ -35,4 +35,12 @@ class Service extends Model
         return $this->hasMany(Booking::class, 'service_id', 'id');
     }
 
+    public function ownerAndAdminCanView($user_id)
+    {
+        if ($this->user_id == $user_id || auth()->user()->role == 'admin') {
+            return true;
+        }
+        return false;
+    }
+
 }

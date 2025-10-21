@@ -1,9 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
-            {{ config('app.name', 'Laravel') }}
-        </a>
 
         <!-- Hamburger (mobile) -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
@@ -15,13 +11,6 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                       href="{{ route('dashboard') }}">
-                        Dashboard
-                    </a>
-                </li>
-
                 {{-- Primer dodatnih linkova --}}
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
@@ -29,6 +18,22 @@
                         Servisi
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                       href="{{ route('service.search') }}">
+                        Pretrazi servise
+                    </a>
+                </li>
+                @auth
+                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('service_owner'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                               href="{{route('service.add')}}">
+                                Dodaj servise
+                            </a>
+                        </li>
+                    @endif
+                @endauth
             </ul>
 
             <!-- Right dropdown (user menu) -->
