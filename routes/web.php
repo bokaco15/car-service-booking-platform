@@ -5,9 +5,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SerachServiceController;
 use App\Http\Controllers\ServiceOfferingController;
+use App\Http\Controllers\ServicePendingController;
 use App\Http\Controllers\WorkingHoursController;
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\OwnerAndAdminPermissionMiddleware;
 use App\Http\Middleware\ServiceRoleMiddleware;
+use App\Http\Middleware\ServiceShowMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,11 +37,11 @@ Route::post('/search', [SerachServiceController::class, 'search'])->name('servic
 //CRUD FOR SERVICES / samo owner moze da doda servis!
     //add
 Route::view('/service/add', 'service.add')->name('service.add')->middleware(OwnerAndAdminPermissionMiddleware::class);
-Route::post('/service/add', [ServiceController::class, 'add'])->name('service.add')->middleware(ServiceRoleMiddleware::class);
+Route::post('/service/add', [ServiceController::class, 'add'])->name('service.add');
     //all services/za admine crud
 Route::get('/service/all', [ServiceController::class, 'all'])->name('service.all');
     //show / mogu svi da vide
-Route::get('/service/{service}', [ServiceController::class, 'show'])->name('service.show');
+Route::get('/service/{service}', [ServiceController::class, 'show'])->name('service.show')->middleware(ServiceShowMiddleware::class);
 // update / admin crud
 Route::get('/service/edit/{service}', [ServiceController::class, 'edit'])->name('service.edit')->middleware(ServiceRoleMiddleware::class);
 Route::post('/service/update/{service}', [ServiceController::class, 'update'])->name('service.update');
@@ -72,3 +75,8 @@ Route::get('/service/booking/show/{service}', [BookingController::class, 'show']
 Route::get('/service/booking/edit/{booking}', [BookingController::class, 'edit'])->name('booking.edit')->middleware(ServiceRoleMiddleware::class);
 Route::post('/service/booking/update/{booking}', [BookingController::class, 'update'])->name('booking.update')->middleware(ServiceRoleMiddleware::class);
 Route::get('/service/booking/delete/{booking}', [BookingController::class, 'delete'])->name('booking.delete')->middleware(ServiceRoleMiddleware::class);
+
+
+//admin service pending
+Route::get('/admin/service/pending', [ServicePendingController::class, 'index'])->name('service.pending')->middleware(AdminMiddleware::class);
+Route::post('/admin/service/status/update/{service}', [ServicePendingController::class, 'update'])->name('service-status.update')->middleware(AdminMiddleware::class);

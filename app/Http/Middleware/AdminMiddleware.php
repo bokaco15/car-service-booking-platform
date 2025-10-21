@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class OwnerAndAdminPermissionMiddleware
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,14 +15,12 @@ class OwnerAndAdminPermissionMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! auth()->check()) {
-            abort(403, 'Error, you cant add service!!!');
+        if(!auth()->user()) {
+            abort(404);
         }
-
-        if (! auth()->user()->hasRole('admin') && ! auth()->user()->hasRole('service_owner')) {
-            abort(403, 'Error, you cant add service!!!');
+        if (!auth()->user()->hasRole('admin')) {
+            abort(404);
         }
-
         return $next($request);
     }
 }

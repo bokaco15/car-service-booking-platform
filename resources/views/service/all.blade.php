@@ -23,6 +23,14 @@
                         <div>
                             <h5 class="card-title mb-1">{{ $service->name }}</h5>
                             <p class="text-muted mb-2">{{ $service->city }}</p>
+                            @auth
+                                @if(auth()->user()->hasRole('admin'))
+                                    <span class="badge {{ $service->status === 'pending' ? 'text-bg-warning' : 'text-bg-success' }}">
+                                        {{ ucfirst($service->status) }}
+                                    </span>
+
+                                @endif
+                            @endauth
                             <p class="card-text mb-0">
                                 {{ Str::limit($service->description, 160) }}
                             </p>

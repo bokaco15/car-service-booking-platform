@@ -14,6 +14,7 @@ class ServiceRepository
         $this->serviceModel = new Service();
     }
 
+
     public function addService($request)
     {
         return $this->serviceModel->create([

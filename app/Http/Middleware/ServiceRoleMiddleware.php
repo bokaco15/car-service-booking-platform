@@ -38,7 +38,7 @@ class ServiceRoleMiddleware
                 $service = $booking->service;
             }
 
-            if($service->ownerAndAdminCanView(authAlias()->user()->id)) {
+            if($service->ownerAndAdminCanView(authAlias()->user()->id) && $service->status == 'approved') {
                 return $next($request);
             }
         }

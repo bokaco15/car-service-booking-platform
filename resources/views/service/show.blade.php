@@ -7,13 +7,17 @@
                 <h1 class="h3 mb-1">{{ Str::title($service->name) }}, {{ Str::title($service->city) }}</h1>
                 <p class="text-muted mb-0">{{ $service->description }}</p>
             </div>
-            <div class="mt-3 mt-md-0">
-                {{-- primer: samo owner/admin vidi --}}
-                <a href="{{ route('serviceOffering.add', $service->id) }}" class="btn btn-primary btn-sm">
-                    Dodaj usluge
-                </a>
-                <a href="{{route('service.edit', $service->id)}}" class="btn btn-secondary btn-sm">Izmeni podatke o servisu</a>
-            </div>
+            @auth
+                @if($service->ownerAndAdminCanView(auth()->user()->id))
+                    <div class="mt-3 mt-md-0">
+                        {{-- primer: samo owner/admin vidi --}}
+                        <a href="{{ route('serviceOffering.add', $service->id) }}" class="btn btn-primary btn-sm">
+                            Dodaj usluge
+                        </a>
+                        <a href="{{route('service.edit', $service->id)}}" class="btn btn-secondary btn-sm">Izmeni podatke o servisu</a>
+                    </div>
+                @endif
+            @endauth
         </div>
 
         @if(session('success'))
@@ -44,7 +48,11 @@
                             <th>Naziv usluge</th>
                             <th>Trajanje (min)</th>
                             <th>Cijena</th>
-                            <th class="text-end">Akcije</th>
+                            @auth
+                                @if($service->ownerAndAdminCanView(auth()->user()->id))
+                                    <th class="text-end">Akcije</th>
+                                @endif
+                            @endauth
                         </tr>
                         </thead>
                         <tbody>
@@ -53,14 +61,18 @@
                                 <td>{{ $offer->name }}</td>
                                 <td>{{ $offer->duration_minutes }}</td>
                                 <td>{{ number_format($offer->price, 2) }} KM</td>
-                                <td class="text-end">
-                                    <a href="{{ route('serviceOffering.edit', $offer->id) }}" class="btn btn-outline-secondary btn-sm">Uredi</a>
-                                    <a href="{{ route('serviceOffering.delete', $offer->id) }}"
-                                       class="btn btn-outline-danger btn-sm"
-                                       onclick="return confirm('Obrisati ovu uslugu?')">
-                                        Obriši
-                                    </a>
-                                </td>
+                                @auth
+                                    @if($service->ownerAndAdminCanView(auth()->user()->id))
+                                        <td class="text-end">
+                                            <a href="{{ route('serviceOffering.edit', $offer->id) }}" class="btn btn-outline-secondary btn-sm">Uredi</a>
+                                            <a href="{{ route('serviceOffering.delete', $offer->id) }}"
+                                               class="btn btn-outline-danger btn-sm"
+                                               onclick="return confirm('Obrisati ovu uslugu?')">
+                                                Obriši
+                                            </a>
+                                        </td>
+                                    @endif
+                                @endauth
                             </tr>
                         @endforeach
                         @if($service->offers->isEmpty())
@@ -78,11 +90,15 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">Radno vrijeme</h2>
-                @if(count($service->working_hours) == 7)
-                    <a href="{{ route('workingHours.edit', $service->id) }}" class="btn btn-sm btn-outline-primary">Izmijeni termine</a>
-                @else
-                    <a href="{{ route('workingHours.add', $service->id) }}" class="btn btn-sm btn-primary">Dodaj termine</a>
-                @endif
+                @auth
+                    @if ($service->ownerAndAdminCanView(auth()->user()->id))
+                        @if(count($service->working_hours) == 7)
+                            <a href="{{ route('workingHours.edit', $service->id) }}" class="btn btn-sm btn-outline-primary">Izmijeni termine</a>
+                        @else
+                            <a href="{{ route('workingHours.add', $service->id) }}" class="btn btn-sm btn-primary">Dodaj termine</a>
+                        @endif
+                    @endif
+                @endauth
             </div>
             <div class="card-body">
                 @if(count($service->working_hours) == 7)
@@ -141,19 +157,26 @@
                         <label for="end_at" class="form-label">Kraj</label>
                         <input type="time" name="end_at" id="end_at" class="form-control">
                     </div>
-
-                    <div class="col-12">
-                        <button class="btn btn-primary">Rezerviši</button>
-                    </div>
+                    @guest
+                        <a href="/login" class="btn btn-primary">Uloguj se da rezervises termin</a>
+                    @endguest
+                    @auth
+                        <div class="col-12">
+                            <button class="btn btn-primary">Rezerviši</button>
+                        </div>
+                    @endauth
                 </form>
             </div>
         </div>
 
-        {{-- Link ka rezervacijama --}}
-        <div class="d-flex justify-content-end">
-            <a href="{{ route('booking.show', $service->id) }}" class="btn btn-outline-secondary">
-                Pogledaj rezervacije
-            </a>
-        </div>
+        @auth
+            @if($service->ownerAndAdminCanView(auth()->user()->id))
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('booking.show', $service->id) }}" class="btn btn-outline-secondary">
+                        Pogledaj rezervacije
+                    </a>
+                </div>
+            @endif
+        @endauth
 
 @endsection

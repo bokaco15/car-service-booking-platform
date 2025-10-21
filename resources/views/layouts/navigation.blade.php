@@ -33,6 +33,14 @@
                             </a>
                         </li>
                     @endif
+                    @if(auth()->user()->hasRole('admin'))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                                   href="{{route('service.pending')}}">
+                                    Servisi na cekanju
+                                </a>
+                            </li>
+                    @endif
                 @endauth
             </ul>
 
