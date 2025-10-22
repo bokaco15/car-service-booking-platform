@@ -33,6 +33,14 @@
                             </a>
                         </li>
                     @endif
+                    @if (auth()->user()->hasRole('service_owner'))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                                   href="{{route('owner.services')}}">
+                                    Moji servisi
+                                </a>
+                            </li>
+                    @endif
                     @if(auth()->user()->hasRole('admin'))
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
@@ -41,6 +49,12 @@
                                 </a>
                             </li>
                     @endif
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                               href="{{route('booking.my')}}">
+                                Rezervacije
+                            </a>
+                        </li>
                 @endauth
             </ul>
 

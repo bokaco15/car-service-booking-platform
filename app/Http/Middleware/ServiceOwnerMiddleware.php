@@ -4,9 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class ServiceShowMiddleware
+class ServiceOwnerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,14 +16,11 @@ class ServiceShowMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->hasRole('admin')) {
-            return $next($request);
+        if (Auth::check()) {
+            if (Auth::user()->hasRole('service_owner')) {
+                return $next($request);
+            }
         }
-        if ($request->route('service')) {
-            $service = $request->route('service');
-            if ($service->status == 'pending') abort(404, 'Error');
-        }
-
-        return $next($request);
+        abort(404);
     }
 }

@@ -37,7 +37,7 @@ class Service extends Model
 
     public function ownerAndAdminCanView($user_id)
     {
-        if ($this->user_id == $user_id || auth()->user()->role == 'admin') {
+        if (($this->user_id == $user_id && auth()->user()->role == 'service_owner') || auth()->user()->role == 'admin') {
             return true;
         }
         return false;

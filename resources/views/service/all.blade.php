@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-4">
-
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -28,7 +26,6 @@
                                     <span class="badge {{ $service->status === 'pending' ? 'text-bg-warning' : 'text-bg-success' }}">
                                         {{ ucfirst($service->status) }}
                                     </span>
-
                                 @endif
                             @endauth
                             <p class="card-text mb-0">
@@ -64,5 +61,4 @@
         <div class="mt-4">
             {!! $services->onEachSide(1)->links('pagination::bootstrap-5') !!}
         </div>
-    </div>
 @endsection

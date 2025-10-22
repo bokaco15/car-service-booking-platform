@@ -5,16 +5,18 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SerachServiceController;
 use App\Http\Controllers\ServiceOfferingController;
+use App\Http\Controllers\ServiceOwnerController;
 use App\Http\Controllers\ServicePendingController;
 use App\Http\Controllers\WorkingHoursController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\OwnerAndAdminPermissionMiddleware;
+use App\Http\Middleware\ServiceOwnerMiddleware;
 use App\Http\Middleware\ServiceRoleMiddleware;
 use App\Http\Middleware\ServiceShowMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('service.all');
 });
 
 //Route::get('/dashboard', function () {
@@ -80,3 +82,11 @@ Route::get('/service/booking/delete/{booking}', [BookingController::class, 'dele
 //admin service pending
 Route::get('/admin/service/pending', [ServicePendingController::class, 'index'])->name('service.pending')->middleware(AdminMiddleware::class);
 Route::post('/admin/service/status/update/{service}', [ServicePendingController::class, 'update'])->name('service-status.update')->middleware(AdminMiddleware::class);
+
+
+// service of service_owner
+Route::get('/service-owner/my-services', [ServiceOwnerController::class, 'myServices'])->name('owner.services')->middleware(ServiceOwnerMiddleware::class);
+
+
+// my-reservations
+Route::get('/reservations', [BookingController::class, 'myReservations'])->name('booking.my')->middleware('auth');
