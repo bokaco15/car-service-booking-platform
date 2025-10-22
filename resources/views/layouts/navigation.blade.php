@@ -13,21 +13,21 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 {{-- Primer dodatnih linkova --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                    <a class="nav-link {{ request()->routeIs('service.all') ? 'active' : '' }}"
                        href="{{ route('service.all') }}">
                         Servisi
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
-                       href="{{ route('service.search') }}">
+                    <a class="nav-link {{ request()->routeIs('service.search.blade') ? 'active' : '' }}"
+                       href="{{ route('service.search.blade') }}">
                         Pretrazi servise
                     </a>
                 </li>
                 @auth
                     @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('service_owner'))
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('service.add') ? 'active' : '' }}"
                                href="{{route('service.add')}}">
                                 Dodaj servise
                             </a>
@@ -35,7 +35,7 @@
                     @endif
                     @if (auth()->user()->hasRole('service_owner'))
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                                <a class="nav-link {{ request()->routeIs('owner.services') ? 'active' : '' }}"
                                    href="{{route('owner.services')}}">
                                     Moji servisi
                                 </a>
@@ -43,14 +43,14 @@
                     @endif
                     @if(auth()->user()->hasRole('admin'))
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                                <a class="nav-link {{ request()->routeIs('service.pending') ? 'active' : '' }}"
                                    href="{{route('service.pending')}}">
                                     Servisi na cekanju
                                 </a>
                             </li>
                     @endif
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('booking.my') ? 'active' : '' }}"
                                href="{{route('booking.my')}}">
                                 Rezervacije
                             </a>
