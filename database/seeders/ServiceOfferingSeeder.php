@@ -6,7 +6,7 @@ use App\Models\ServiceOffering;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SeviceOfferingSeeder extends Seeder
+class ServiceOfferingSeeder extends Seeder
 {
     public function run(): void
     {
