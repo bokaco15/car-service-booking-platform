@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ServiceOfferingFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'service_id' => Service::inRandomOrder()->first()->id,
+            'name' => fake()->sentence(2),
+            'duration_minutes' => mt_rand(30, 120),
+            'price' => mt_rand(50,1000),
         ];
     }
 }
