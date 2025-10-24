@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\ServiceStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 1,
+            'user_id' => User::inRandomOrder()->first()->id,
             'name' => fake()->name(),
             'city' => fake()->city(),
             'description' => fake()->text(30),
