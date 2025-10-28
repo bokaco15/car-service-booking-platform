@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ServiceStatus;
 use App\Models\Service;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->string('name', 32);
             $table->string('city', 32);
             $table->text('description');
-            $table->string('status');
+            $table->string('status')->default(ServiceStatus::PENDING->value);
             $table->timestamps();
         });
     }
