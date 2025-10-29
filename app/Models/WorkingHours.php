@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WorkingHours extends Model
 {
-    protected $table = 'working_hours';
+    use HasFactory;
+
+    const TABLE = 'working_hours';
+
+    protected $table = self::TABLE;
     protected $fillable = [
       'service_id',
       'day_of_week',
@@ -15,7 +21,7 @@ class WorkingHours extends Model
     ];
 
 
-    public function service()
+    public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
