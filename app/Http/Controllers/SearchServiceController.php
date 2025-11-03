@@ -20,13 +20,9 @@ class SearchServiceController extends Controller
             })->get();
 
 
-        if($services->isEmpty()) {
-            return redirect()->route('service.search.blade')->with('error', 'You cant find any service');
-        }
-
-        return view('service.search-show', compact('services'));
-
-
+        return $services->isEmpty()
+            ? redirect()->route('service.search.blade')->with('error', 'You cant find any service')
+            : view('service.search-show', compact('services'));
 
     }
 }
