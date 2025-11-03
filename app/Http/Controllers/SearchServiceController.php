@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchServiceRequest;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isEmpty;
 
 class SearchServiceController extends Controller
 {
-    public function search(Request $request)
+    public function search(SearchServiceRequest $request)
     {
-        //URADITI VALIDACIJU PREKO REQUEST-A ZA SEARCHSERVICE!!!
-
-
         $services = Service::with('offers')
             ->where('city', 'LIKE', '%'.$request->city.'%')
             ->whereHas('offers', function ($query) use ($request) {
