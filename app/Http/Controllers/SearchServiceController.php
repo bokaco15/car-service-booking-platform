@@ -6,7 +6,7 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isEmpty;
 
-class SerachServiceController extends Controller
+class SearchServiceController extends Controller
 {
     public function search(Request $request)
     {
