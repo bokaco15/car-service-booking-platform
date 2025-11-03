@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchServiceRequest;
 use App\Models\Service;
-use Illuminate\Http\Request;
-use function PHPUnit\Framework\isEmpty;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class SearchServiceController extends Controller
 {
-    public function search(SearchServiceRequest $request)
+    public function search(SearchServiceRequest $request): RedirectResponse|View
     {
         $services = Service::with('offers')
             ->where('city', 'LIKE', '%'.$request->city.'%')
