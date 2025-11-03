@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ServiceSeeder::class,
             ServiceOfferingSeeder::class,
+            WorkingHoursSeeder::class,
         ]);
     }
 }

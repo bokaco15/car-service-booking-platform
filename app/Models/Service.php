@@ -39,4 +39,9 @@ class Service extends Model
         return $this->hasMany(ServiceOffering::class, 'service_id', 'id');
     }
 
+    public function working_hours(): HasMany
+    {
+        return $this->hasMany(WorkingHours::class, 'service_id', 'id');
+    }
+
 }
