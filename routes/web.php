@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-
-Route::view('/search', 'service.search')->name('service.search.blade');
-Route::post('/search', [SerachServiceController::class, 'search'])->name('service.search');
-
+Route::name('service.')->prefix('/service')->group(function() {
+    Route::view('/search', 'service.search')->name('search.blade');
+    Route::post('/search', [SerachServiceController::class, 'search'])->name('search');
+});
