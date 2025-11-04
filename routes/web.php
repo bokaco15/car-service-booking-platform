@@ -61,7 +61,7 @@ Route::post('service/offering/update/{offer}', [ServiceOfferingController::class
 //OWNER-ADMIN
 Route::get('/service/working-hours/add/{service}', [WorkingHoursController::class, 'add'])->name('workingHours.add');
 Route::post('/service/working-hours/insert', [WorkingHoursController::class, 'insert'])->name('workingHours.insert');
-Route::get('/service/woriking-hours/edit/{service}', [WorkingHoursController::class, 'edit'])->name('workingHours.edit');
+Route::get('/service/working-hours/edit/{service}', [WorkingHoursController::class, 'edit'])->name('workingHours.edit');
 Route::post('/service/working-hours/update/{service}', [WorkingHoursController::class, 'update'])->name('workingHours.update');
 
 
