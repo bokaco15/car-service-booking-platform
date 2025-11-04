@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\BookingStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
-    protected $table = 'bookings';
+    use HasFactory;
+
+    const TABLE = 'bookings';
+
+    protected $table = self::TABLE;
     protected $fillable = [
         'service_id',
         'client_id',
@@ -15,4 +21,12 @@ class Booking extends Model
         'end_at',
         'status'
     ];
+
+    protected function casts():array
+    {
+        return [
+            'status' => BookingStatus::class,
+        ];
+    }
+
 }

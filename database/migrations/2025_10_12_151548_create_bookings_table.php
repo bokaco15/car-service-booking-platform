@@ -1,59 +1,29 @@
 <?php
 
+use App\Enums\ServiceStatus;
+use App\Models\Booking;
+use App\Models\Service;
+use App\Models\ServiceOffering;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create(Booking::TABLE, function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('service_id');
-                $table->foreign('service_id')
-                    ->references('id')
-                    ->on('services')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-
-            $table->unsignedBigInteger('client_id');
-                $table->foreign('client_id')
-                    ->references('id')
-                    ->on('users')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-
-            $table->unsignedBigInteger('service_offering_id');
-                $table->foreign('service_offering_id')
-                    ->references('id')
-                    ->on('service_offerings')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-
+            $table->foreignId('service_id')->constrained(Service::TABLE)->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('service_offering_id')->nullable()->constrained(ServiceOffering::TABLE)->cascadeOnUpdate()->cascadeOnDelete();
             $table->time('start_at');
-
             $table->time('end_at');
-
-            $table->enum('status', [
-               'pending',
-               'confirmed',
-               'rejected',
-               'cancelled',
-               'done'
-            ]);
-
+            $table->string('status')->default(ServiceStatus::PENDING);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('bookings');
