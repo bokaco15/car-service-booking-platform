@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Service;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class ServiceSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        Service::factory()->count(50)->create();
+        User::factory()->count(50)->create();
     }
 }

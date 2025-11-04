@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\SearchServiceRequest;
+use App\Models\Service;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
+class SearchServiceController extends Controller
+{
+    public function search(SearchServiceRequest $request): RedirectResponse|View
+    {
+        $services = Service::with('offers')
+            ->where('city', 'LIKE', '%'.$request->city.'%')
+            ->whereHas('offers', function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%'.$request->service_type.'%');
+            })->get();
+
+
+        return $services->isEmpty()
+            ? redirect()->route('service.search.blade')->with('error', 'You cant find any service')
+            : view('service.search-show', compact('services'));
+
+    }
+}

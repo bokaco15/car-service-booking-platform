@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServiceOffering extends Model
 {
-    protected $table = 'service_offerings';
+    use HasFactory;
+
+    const TABLE = 'service_offerings';
+    protected $table = self::TABLE;
     protected $fillable = [
         'service_id',
         'name',
@@ -14,7 +19,7 @@ class ServiceOffering extends Model
         'price',
     ];
 
-    public function service()
+    public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
