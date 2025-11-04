@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddAndEditWorkingHoursRequest;
 use App\Models\Service;
 use App\Models\WorkingHours;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Nette\Utils\Paginator;
 use function PHPUnit\Framework\isEmpty;
 
 class WorkingHoursController extends Controller
 {
-    public function add(Service $service)
+    public function add(Service $service): View
     {
-//        dd($service->working_hours);
         if ($service->working_hours->isEmpty()) {
             $days = ['Ponedeljak', 'Utorak', 'Srijeda', 'Cetvrtak', 'Petak', 'Subota', 'Nedelja'];
             return view('workingHours.add', compact('service', 'days'));
@@ -21,7 +23,7 @@ class WorkingHoursController extends Controller
         }
     }
 
-    public function insert(Request $request)
+    public function insert(AddAndEditWorkingHoursRequest $request): void
     {
         foreach($request->working_hours as $days) {
             WorkingHours::create([
@@ -33,19 +35,19 @@ class WorkingHoursController extends Controller
         }
     }
 
-    public function edit(Service $service)
+    public function edit(Service $service): View
     {
         if ($service->working_hours->isNotEmpty()) {
             $days = ['Ponedeljak', 'Utorak', 'Srijeda', 'Cetvrtak', 'Petak', 'Subota', 'Nedelja'];
-            return view('workingHours.edit', compact('service', 'days'));
+            $workingHoursMap = $service->working_hours->keyBy('day_of_week');
+            return view('workingHours.edit', compact('service', 'days', 'workingHoursMap'));
         } else {
             abort(403, 'Greska, moras prvo dodati termine!');
         }
     }
 
-    public function update(Request $request, Service $service)
+    public function update(AddAndEditWorkingHoursRequest $request, Service $service): RedirectResponse
     {
-//        dd($request->all());
         foreach ($request->working_hours as $days => $value) {
            $wh = WorkingHours::where('service_id', $service->id)->where('day_of_week', $days)->first();
            $wh->day_of_week = $value['day_of_week'];

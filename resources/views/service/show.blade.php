@@ -39,10 +39,9 @@
     </tbody>
 </table>
 
-{{--@dd($service)--}}
 
 @if(count($service->working_hours) == 7)
-    @foreach($service->working_hours as $wh)
+    @foreach($service->working_hours->sortBy('id') as $wh)
         @if($wh->opens_at == null)
             {{$wh->id}} {{$wh->day_of_week}}: ne radimo <br>
         @else
@@ -56,10 +55,7 @@
 
 <hr>
 
-{{--Do ovde sam stao!!!--}}
 
-
-{{--bilo ko moze rezervisat--}}
 <h3>Rezervisi termin!</h3>
 <form action="{{route('booking.insert')}}" method="POST">
     @csrf
@@ -80,8 +76,6 @@
     <p>{{session('booking_success')}}</p>
 @endif
 
-
-{{--Prikaz rezervacija admin i owner mogu vidjeti--}}
 
 <hr>
 
