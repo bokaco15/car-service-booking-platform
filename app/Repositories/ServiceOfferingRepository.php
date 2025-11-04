@@ -12,9 +12,9 @@ class ServiceOfferingRepository
         $this->serviceOfferingModel = new ServiceOffering();
     }
 
-    public function insert($request, $offer)
+    public function insert($request, $offer): ServiceOffering
     {
-        $this->serviceOfferingModel->create([
+        return $this->serviceOfferingModel->create([
             'service_id' => $offer->id,
             'name' => $request->name,
             'duration_minutes' => $request->duration_minutes,
