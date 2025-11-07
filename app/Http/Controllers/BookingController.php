@@ -16,10 +16,18 @@ class BookingController extends Controller
 {
     public function insert(BookingInsertRequest $request): RedirectResponse
     {
-        Booking::create(array_merge(
-            $request->validated(),
-            ['client_id'=>Auth::id()]
-            ));
+        //new syntax array unpacking instead of array_merge();
+
+        Booking::create([
+            ...$request->validated(),
+            'client_id'=>Auth::id()
+        ]);
+
+
+//        Booking::create(array_merge(
+//            $request->validated(),
+//            ['client_id'=>Auth::id()]
+//            ));
         return redirect()->back()->with('booking_success', 'You have been successfully made reservation');
     }
 
