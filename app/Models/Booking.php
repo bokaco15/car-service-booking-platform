@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\BookingStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
@@ -27,6 +28,17 @@ class Booking extends Model
         return [
             'status' => BookingStatus::class,
         ];
+    }
+
+
+    public function serviceOffering():BelongsTo
+    {
+        return $this->belongsTo(ServiceOffering::class);
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
     }
 
 }
