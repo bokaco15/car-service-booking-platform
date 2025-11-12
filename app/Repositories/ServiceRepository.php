@@ -14,7 +14,7 @@ class ServiceRepository
         $this->serviceModel = new Service();
     }
 
-    public function addService($request)
+    public function addService($request): Service
     {
         return $this->serviceModel->create([
             'user_id' => Auth::user()->id,
@@ -25,7 +25,7 @@ class ServiceRepository
         ]);
     }
 
-    public function update($request, $service)
+    public function update($request, $service): bool
     {
         $service->name = $request->name;
         $service->city = $request->city;

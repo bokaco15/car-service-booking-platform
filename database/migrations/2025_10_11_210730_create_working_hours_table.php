@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\WorkingHours;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,18 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('working_hours', function (Blueprint $table) {
+        Schema::create(WorkingHours::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('service_id');
-                $table->foreign('service_id')
-                    ->references('id')
-                    ->on('services')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+            $table->foreignId('service_id')->constrained('services')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('day_of_week', 32);
             $table->unsignedTinyInteger('opens_at')->nullable();
             $table->unsignedTinyInteger('closes_at')->nullable();
             $table->timestamps();
+
+            $table->unique(['service_id', 'day_of_week']);
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('working_hours');
+        Schema::dropIfExists(WorkingHours::TABLE);
     }
 };

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Service;
+use Illuminate\Database\Eloquent\Collection;
 
 class SearchServiceRepository
 {
@@ -12,7 +13,7 @@ class SearchServiceRepository
         $this->serviceModel = new Service();
     }
 
-    public function searchService($request)
+    public function searchService($request): Collection
     {
         return $this->serviceModel->with('offers')
             ->where('city', 'LIKE', '%'.$request->city.'%')

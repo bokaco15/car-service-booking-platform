@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Service;
+use App\Models\Booking;
 use Illuminate\Database\Seeder;
 
-class ServiceSeeder extends Seeder
+class BookingSeeder extends Seeder
 {
     public function run(): void
     {
-        Service::factory()->count(50)->create();
+        Booking::factory()->count(200)->create();
     }
 }
