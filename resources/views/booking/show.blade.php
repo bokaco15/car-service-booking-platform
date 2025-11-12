@@ -1,3 +1,4 @@
+@php use App\Enums\BookingStatus; @endphp
 @extends('layouts.app')
 
 @section('content')
@@ -42,12 +43,11 @@
                         <td>{{ $booking->end_at }}</td>
                         <td>
                             <span class="badge
-                                {{ $booking->status === 'pending' ? ' text-bg-warning' : '' }}
-                                {{ in_array($booking->status, ['confirmed','done']) ? ' text-bg-success' : '' }}
-                                {{ in_array($booking->status, ['rejected','cancelled']) ? ' text-bg-danger' : '' }}
-                                {{ !in_array($booking->status, ['pending','confirmed','done','rejected','cancelled']) ? ' text-bg-secondary' : '' }}
+                                {{ $booking->status === BookingStatus::PENDING ? ' text-bg-warning' : '' }}
+                                {{ $booking->status === BookingStatus::DONE ? ' text-bg-success' : '' }}
+                                {{ in_array($booking->status, [BookingStatus::CANCELLED, BookingStatus::REJECTED]) ? ' text-bg-danger' : '' }}
                             ">
-                            {{ ucfirst($booking->status) }}
+                                {{$booking->status}}
                             </span>
                         </td>
                         <td class="text-end">

@@ -1,3 +1,4 @@
+@php use App\Enums\BookingStatus; @endphp
 @extends('layouts.app')
 
 @section('content')
@@ -16,9 +17,9 @@
             <div class="col-12">
                 <label for="status" class="form-label">Status</label>
                 <select name="status" id="status" class="form-select">
-                    @foreach($statuses as $status)
-                        <option value="{{ $status }}" {{ $booking->status === $status ? 'selected' : '' }}>
-                            {{ ucfirst($status) }}
+                    @foreach(BookingStatus::cases() as $status)
+                        <option value="{{ $status->value }}" {{ $booking->status === $status ? 'selected' : '' }}>
+                            {{ ucfirst($status->value) }}
                         </option>
                     @endforeach
                 </select>

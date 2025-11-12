@@ -23,7 +23,7 @@ class WorkingHoursController extends Controller
         }
     }
 
-    public function insert(AddAndEditWorkingHoursRequest $request): void
+    public function insert(AddAndEditWorkingHoursRequest $request): RedirectResponse
     {
         foreach($request->working_hours as $days) {
             WorkingHours::create([

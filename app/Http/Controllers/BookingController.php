@@ -17,7 +17,6 @@ class BookingController extends Controller
     public function insert(BookingInsertRequest $request): RedirectResponse
     {
         //new syntax array unpacking instead of array_merge();
-
         Booking::create([
             ...$request->validated(),
             'client_id'=>Auth::id()
