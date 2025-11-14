@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <h3 class="h5 mb-4">Dodavanje nove ponude za servis: <strong>{{ $service->name }}</strong></h3>
+    <h3 class="h5 mb-4">Dodavanje nove ponude za servis: <strong>{{ $offer->name }}</strong></h3>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -18,9 +18,9 @@
 
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <form action="{{ route('serviceOffering.insert', $service->id) }}" method="POST" class="row g-3">
+            <form action="{{ route('serviceOffering.add', $offer->id) }}" method="POST" class="row g-3">
                 @csrf
-                <input type="hidden" name="service_id" value="{{ $service->id }}">
+                <input type="hidden" name="service_id" value="{{ $offer->id }}">
 
                 <div class="col-md-4">
                     <label for="name" class="form-label">Naziv ponude</label>

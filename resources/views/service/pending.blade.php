@@ -1,3 +1,4 @@
+@php use App\Enums\ServiceStatus; @endphp
 @extends('layouts.app')
 
 @section('content')
@@ -24,8 +25,8 @@
                                 <p class="card-text mb-3">{{ Str::limit($pendingService->description, 80, '...') }}</p>
 
                                 <span class="badge
-                                    {{ $pendingService->status === 'pending' ? 'text-bg-warning' : 'text-bg-success' }}">
-                                    {{ ucfirst($pendingService->status) }}
+                                    {{ $pendingService->status == ServiceStatus::PENDING ? 'text-bg-warning' : 'text-bg-success' }}">
+                                    {{ $pendingService->status }}
                                 </span>
 
                                 <div class="mt-auto pt-3 d-flex justify-content-between gap-2">

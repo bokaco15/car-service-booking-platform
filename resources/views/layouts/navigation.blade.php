@@ -1,3 +1,4 @@
+@php use App\Enums\UserRole; @endphp
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
 
@@ -25,7 +26,7 @@
                     </a>
                 </li>
                 @auth
-                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('service_owner'))
+                    @if(auth()->user()->hasRole(UserRole::ADMIN) || auth()->user()->hasRole(UserRole::SERVICE_OWNER))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('service.add') ? 'active' : '' }}"
                                href="{{route('service.add')}}">
@@ -33,7 +34,7 @@
                             </a>
                         </li>
                     @endif
-                    @if (auth()->user()->hasRole('service_owner'))
+                    @if (auth()->user()->hasRole(UserRole::SERVICE_OWNER))
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('owner.services') ? 'active' : '' }}"
                                    href="{{route('owner.services')}}">
@@ -41,7 +42,7 @@
                                 </a>
                             </li>
                     @endif
-                    @if(auth()->user()->hasRole('admin'))
+                    @if(auth()->user()->hasRole(UserRole::ADMIN))
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('service.pending') ? 'active' : '' }}"
                                    href="{{route('service.pending')}}">

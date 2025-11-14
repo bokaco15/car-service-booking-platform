@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchServiceController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\SerachServiceController;
 use App\Http\Controllers\ServiceOfferingController;
 use App\Http\Controllers\ServiceOwnerController;
 use App\Http\Controllers\ServicePendingController;
@@ -39,7 +39,7 @@ Route::prefix('services')->group(function() {
 //add
     Route::view('/add', 'service.add')->name('service.add');
     Route::post('/add', [ServiceController::class, 'add'])->name('service.add');
-//all services/za admine crud
+//all services/za admin crud
     Route::get('/all', [ServiceController::class, 'all'])->name('service.all');
 //show / mogu svi da vide
     Route::get('/{service}', [ServiceController::class, 'show'])->name('service.show');
@@ -79,6 +79,7 @@ Route::prefix('services')->group(function() {
 
 });
 
+
 Route::get('/admin/service/pending', [ServicePendingController::class, 'index'])->name('service.pending')->middleware(AdminMiddleware::class);
 Route::post('/admin/service/status/update/{service}', [ServicePendingController::class, 'update'])->name('service-status.update')->middleware(AdminMiddleware::class);
 
@@ -89,10 +90,4 @@ Route::get('/service-owner/my-services', [ServiceOwnerController::class, 'myServ
 
 // my-reservations
 Route::get('/reservations', [BookingController::class, 'myReservations'])->name('booking.my')->middleware('auth');
-
-
-
-
-
-
 
