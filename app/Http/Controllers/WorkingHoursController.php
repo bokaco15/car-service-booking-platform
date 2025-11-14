@@ -23,7 +23,7 @@ class WorkingHoursController extends Controller
         }
     }
 
-    public function insert(AddAndEditWorkingHoursRequest $request): void
+    public function insert(AddAndEditWorkingHoursRequest $request): RedirectResponse
     {
         foreach($request->working_hours as $days) {
             WorkingHours::create([
@@ -33,6 +33,7 @@ class WorkingHoursController extends Controller
                 'closes_at' => $days['closes_at']
             ]);
         }
+        return redirect(route('service.show', $request->service_id))->with('success', 'You have been successfully added working hours');
     }
 
     public function edit(Service $service): View
@@ -56,7 +57,7 @@ class WorkingHoursController extends Controller
 
            $wh->save();
         }
-        return redirect()->route('service.show', $service->id);
+        return redirect()->route('service.show', $service->id)->with('success', 'You have been successfully updated Working hours');
     }
 
 }
