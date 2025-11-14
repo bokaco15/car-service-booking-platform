@@ -14,7 +14,7 @@ use App\Http\Middleware\ServiceShowMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('service.all');
 });
 
 Route::get('/dashboard', function () {
