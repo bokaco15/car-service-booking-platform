@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ServiceStatus;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,5 +49,15 @@ class Service extends Model
     {
         return $this->hasMany(Booking::class, 'service_id', 'id');
     }
+
+    /*
+    public function ownerAndAdminCanView($user_id) : bool
+    {
+        if (($this->user_id == $user_id && auth()->user()->role == UserRole::SERVICE_OWNER) || auth()->user()->role == UserRole::ADMIN) {
+            return true;
+        }
+        return false;
+    }
+    */
 
 }
