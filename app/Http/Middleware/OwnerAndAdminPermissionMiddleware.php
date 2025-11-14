@@ -2,25 +2,21 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\UserRole;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class OwnerAndAdminPermissionMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
         if (! auth()->check()) {
-            abort(403, 'Error, you cant add service!!!');
+            abort(404);
         }
 
-        if (! auth()->user()->hasRole('admin') && ! auth()->user()->hasRole('service_owner')) {
-            abort(403, 'Error, you cant add service!!!');
+        if (! auth()->user()->hasRole(UserRole::ADMIN) && ! auth()->user()->hasRole(UserRole::SERVICE_OWNER)) {
+            abort(404);
         }
 
         return $next($request);

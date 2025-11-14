@@ -9,6 +9,7 @@ use App\Http\Controllers\ServiceOwnerController;
 use App\Http\Controllers\ServicePendingController;
 use App\Http\Controllers\WorkingHoursController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\OwnerAndAdminPermissionMiddleware;
 use App\Http\Middleware\ServiceOwnerMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -24,58 +25,60 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
+    //reservations
+    Route::get('/reservations', [BookingController::class, 'myReservations'])->name('booking.my');
+    //booking insert
+    Route::post('`/booking`/insert', [BookingController::class, 'insert'])->name('booking.insert')->middleware('auth');
+
+});
 require __DIR__.'/auth.php';
 
 
 Route::prefix('services')->group(function() {
-
-
     Route::view('/search', 'service.search')->name('service.search.blade');
     Route::post('/search', [SearchServiceController::class, 'search'])->name('service.search');
 
-    //CRUD FOR SERVICES / samo owner moze da doda servis!
-//add
-    Route::view('/add', 'service.add')->name('service.add');
-    Route::post('/add', [ServiceController::class, 'add'])->name('service.add');
+
+    Route::middleware(OwnerAndAdminPermissionMiddleware::class)->group(function(){
+        Route::view('/add', 'service.add')->name('service.add');
+        Route::post('/add', [ServiceController::class, 'add'])->name('service.add');
+
+        //Service [owner-admin]
+        Route::get('/edit/{service}', [ServiceController::class, 'edit'])->name('service.edit')->can('view', 'service');
+        Route::post('/update/{service}', [ServiceController::class, 'update'])->name('service.update')->can('update', 'service');
+        Route::get('/delete/{service}', [ServiceController::class,'delete'])->name('service.delete')->can('delete', 'service');
+
+
+        //SERVICE OFFERING CRUD [admin - service owner]
+        Route::get('/offering/add/{service}', [ServiceOfferingController::class, 'add'])->name('serviceOffering.add')->can('view', 'service');
+        Route::post('/offering/add/{service}', [ServiceOfferingController::class, 'insert'])->name('serviceOffering.insert');
+            // delete offer-a
+        Route::get('/offering/delete/{service}', [ServiceOfferingController::class, 'delete'])->name('serviceOffering.delete')->can('delete', 'service');
+        Route::get('/offering/edit/{service}', [ServiceOfferingController::class, 'edit'])->name('serviceOffering.edit')->can('view', 'service');
+        Route::post('/offering/update/{service}', [ServiceOfferingController::class, 'update'])->name('serviceOffering.update')->can('update', 'service');
+
+
+        //WORKING HOURS [owner-admin]
+        Route::get('/working-hours/add/{service}', [WorkingHoursController::class, 'add'])->name('workingHours.add')->can('view', 'service');
+        Route::post('/working-hours/insert', [WorkingHoursController::class, 'insert'])->name('workingHours.insert')->can('update', 'service');
+        Route::get('/working-hours/edit/{service}', [WorkingHoursController::class, 'edit'])->name('workingHours.edit')->can('view', 'service');
+        Route::post('/working-hours/update/{service}', [WorkingHoursController::class, 'update'])->name('workingHours.update')->can('update', 'service');
+
+        //Booking [owner - admin]
+        Route::get('/booking/show/{service}', [BookingController::class, 'show'])->name('booking.show')->can('view', 'service');
+        Route::get('/booking/edit/{booking}', [BookingController::class, 'edit'])->name('booking.edit')->can('view', 'booking');
+        Route::post('/booking/update/{booking}', [BookingController::class, 'update'])->name('booking.update')->can('update', 'booking');
+        Route::get('/booking/delete/{booking}', [BookingController::class, 'delete'])->name('booking.delete')->can('delete', 'booking');
+
+    });
+
+
+
 //all services/za admin crud
     Route::get('/all', [ServiceController::class, 'all'])->name('service.all');
 //show / mogu svi da vide
     Route::get('/{service}', [ServiceController::class, 'show'])->name('service.show');
-// update / admin crud
-    Route::get('/edit/{service}', [ServiceController::class, 'edit'])->name('service.edit');
-    Route::post('/update/{service}', [ServiceController::class, 'update'])->name('service.update');
-// delete/admin/crud
-    Route::get('/delete/{service}', [ServiceController::class,'delete'])->name('service.delete');
-
-    //SERVICE OFFERING CRUD
-//owner-admin moze da radi!
-//add offers
-    Route::get('/offering/add/{offer}', [ServiceOfferingController::class, 'add'])->name('serviceOffering.add');
-    Route::post('/offering/add/{offer}', [ServiceOfferingController::class, 'insert'])->name('serviceOffering.insert');
-// delete offer-a
-    Route::get('/offering/delete/{offer}', [ServiceOfferingController::class, 'delete'])->name('serviceOffering.delete');
-    Route::get('/offering/edit/{offer}', [ServiceOfferingController::class, 'edit'])->name('serviceOffering.edit');
-    Route::post('/offering/update/{offer}', [ServiceOfferingController::class, 'update'])->name('serviceOffering.update');
-
-
-
-    //WORKING HOURS
-//OWNER-ADMIN
-    Route::get('/working-hours/add/{service}', [WorkingHoursController::class, 'add'])->name('workingHours.add');
-    Route::post('/working-hours/insert', [WorkingHoursController::class, 'insert'])->name('workingHours.insert');
-    Route::get('/working-hours/edit/{service}', [WorkingHoursController::class, 'edit'])->name('workingHours.edit');
-    Route::post('/working-hours/update/{service}', [WorkingHoursController::class, 'update'])->name('workingHours.update');
-
-
-//Bookings
-    Route::post('/booking/insert', [BookingController::class, 'insert'])->name('booking.insert');
-    Route::get('/booking/show/{service}', [BookingController::class, 'show'])->name('booking.show');
-    Route::get('/booking/edit/{booking}', [BookingController::class, 'edit'])->name('booking.edit');
-    Route::post('/booking/update/{booking}', [BookingController::class, 'update'])->name('booking.update');
-    Route::get('/booking/delete/{booking}', [BookingController::class, 'delete'])->name('booking.delete');
-
 
 });
 
@@ -85,10 +88,8 @@ Route::post('/admin/service/status/update/{service}', [ServicePendingController:
 
 
 // service of service_owner
-Route::get('/service-owner/my-services', [ServiceOwnerController::class, 'myServices'])->name('owner.services');
-//    ->middleware(ServiceOwnerMiddleware::class);
+Route::get('/service-owner/my-services', [ServiceOwnerController::class, 'myServices'])->name('owner.services')->middleware(OwnerAndAdminPermissionMiddleware::class);
 
 
-// my-reservations
-Route::get('/reservations', [BookingController::class, 'myReservations'])->name('booking.my')->middleware('auth');
+
 

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\ServiceAddRequest;
 use App\Models\Service;
 use App\Repositories\SearchServiceRepository;
 use App\Repositories\ServiceRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +33,7 @@ class ServiceController extends Controller
     public function all(): View
     {
         if (Auth::check()) {
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasRole(UserRole::ADMIN)) {
                 $services = Service::paginate(10, '*', 'page');
                 return view('service.all', compact('services'));
             }

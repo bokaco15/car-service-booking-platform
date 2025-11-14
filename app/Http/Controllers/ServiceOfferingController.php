@@ -8,41 +8,42 @@ use App\Models\ServiceOffering;
 use App\Repositories\ServiceOfferingRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class ServiceOfferingController extends Controller
 {
     public function __construct(private ServiceOfferingRepository $serviceOfferingRepo){}
 
-    public function add(Service $offer): View
+    public function add(Service $service): View
     {
-        return view('serviceOffering.add', compact('offer'));
+        return view('serviceOffering.add', compact('service'));
     }
 
-    public function insert(ServiceOfferingAddRequest $request, Service $offer): RedirectResponse
+    public function insert(ServiceOfferingAddRequest $request, Service $service): RedirectResponse
     {
-        $this->serviceOfferingRepo->insert($request, $offer);
-        return redirect()->route('service.show', $offer->id)->with('success', 'You have been successfully added an offer');
+        $this->serviceOfferingRepo->insert($request, $service);
+        return redirect()->route('service.show', $service->id)->with('success', 'You have been successfully added an offer');
     }
 
-    public function delete(ServiceOffering $offer): RedirectResponse
+    public function delete(ServiceOffering $service): RedirectResponse
     {
-        $offer->delete();
+        $service->delete();
         return redirect()->back();
     }
 
-    public function edit(ServiceOffering $offer): View
+    public function edit(ServiceOffering $service): View
     {
-        return view('serviceOffering.edit', compact('offer'));
+        return view('serviceOffering.edit', compact('service'));
     }
 
-    public function update(Request $request, ServiceOffering $offer): RedirectResponse
+    public function update(Request $request, ServiceOffering $service): RedirectResponse
     {
-        $offer->name = $request->name;
-        $offer->duration_minutes = $request->duration_minutes;
-        $offer->price = $request->price;
+        $service->name = $request->name;
+        $service->duration_minutes = $request->duration_minutes;
+        $service->price = $request->price;
 
-        $offer->save();
+        $service->save();
 
         return redirect()->back()->with('success', 'you have been sucessfully updated an offer');
     }
