@@ -85,7 +85,8 @@ Route::post('/admin/service/status/update/{service}', [ServicePendingController:
 
 
 // service of service_owner
-Route::get('/service-owner/my-services', [ServiceOwnerController::class, 'myServices'])->name('owner.services')->middleware(ServiceOwnerMiddleware::class);
+Route::get('/service-owner/my-services', [ServiceOwnerController::class, 'myServices'])->name('owner.services');
+//    ->middleware(ServiceOwnerMiddleware::class);
 
 
 // my-reservations

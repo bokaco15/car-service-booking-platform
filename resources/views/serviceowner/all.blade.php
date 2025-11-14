@@ -1,3 +1,4 @@
+@php use App\Enums\ServiceStatus; @endphp
 @extends('layouts.app')
 @section('content')
 
@@ -10,8 +11,7 @@
 
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="h3 mb-0">Svi servisi</h1>
-        {{-- mesto za filter ili dugme “Dodaj servis” po želji --}}
-        {{-- <a href="{{ route('service.create') }}" class="btn btn-primary">+ Novi servis</a> --}}
+        <a href="{{ route('service.add') }}" class="btn btn-primary">+ Novi servis</a>
     </div>
 
     @forelse ($servicesOfOwner as $service)
@@ -21,14 +21,14 @@
                     <div>
                         <h5 class="card-title mb-1">{{ $service->name }}</h5>
                         <p class="text-muted mb-2">{{ $service->city }}</p>
-                        <span class="badge {{ $service->status === 'pending' ? 'text-bg-warning' : 'text-bg-success' }}">
-                            {{ ucfirst($service->status) }}
+                        <span class="badge {{ $service->status === ServiceStatus::PENDING ? 'text-bg-warning' : 'text-bg-success' }}">
+                            {{ $service->status }}
                         </span>
                         <p class="card-text mb-0">
                             {{ Str::limit($service->description, 160) }}
                         </p>
                     </div>
-                    @if($service->status == 'approved')
+                    @if($service->status == ServiceStatus::APPROVED)
                         <div class="d-flex gap-2">
                             <a href="{{ route('service.show', $service->id) }}" class="btn btn-outline-secondary btn-sm">
                                 Prikaži
@@ -50,7 +50,6 @@
         <div class="alert alert-info">Nema servisa za prikaz.</div>
     @endforelse
 
-    {{-- Paginacija --}}
     <div class="mt-4">
         {{$servicesOfOwner->links()}}
     </div>

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ServiceStatus;
+use App\Http\Requests\ServiceStatusUpdateRequest;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ServicePendingController extends Controller
@@ -16,13 +19,11 @@ class ServicePendingController extends Controller
         return view('service.pending',  compact('pendingServices', 'pendingServicesCount'));
     }
 
-    public function update(Request $request, Service $service): RedirectResponse
+    public function update(ServiceStatusUpdateRequest $request, Service $service): RedirectResponse
     {
-        $request->validate([
-           'status' => 'required|in:approved'
+        $service->update([
+           'status' => $request->validated('status')
         ]);
-        $service->status = $request->status;
-        $service->save();
 
         return redirect()->route('service.pending')->with('success', 'You have been updated status successfully');
     }
