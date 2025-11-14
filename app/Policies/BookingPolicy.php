@@ -2,12 +2,20 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class BookingPolicy
 {
+    public function before(User $user, $ability): bool | null
+    {
+        if($user->hasRole(UserRole::ADMIN)) {
+            return true;
+        }
+        return null;
+    }
     /**
      * Determine whether the user can view any models.
      */

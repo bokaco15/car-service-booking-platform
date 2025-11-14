@@ -9,12 +9,12 @@
         </div>
 
         @auth
-            @if($service->ownerAndAdminCanView(auth()->id()))
+            @can('view', $service)
                 <div class="mt-3 mt-md-0">
                     <a href="{{ route('serviceOffering.add', $service->id) }}" class="btn btn-primary btn-sm">Dodaj usluge</a>
                     <a href="{{ route('service.edit', $service->id) }}" class="btn btn-secondary btn-sm">Izmeni podatke o servisu</a>
                 </div>
-            @endif
+            @endcan
         @endauth
     </div>
 
@@ -49,9 +49,9 @@
                         <th>Trajanje (min)</th>
                         <th>Cijena</th>
                         @auth
-                            @if($service->ownerAndAdminCanView(auth()->id()))
+                            @can('view', $service)
                                 <th class="text-end">Akcije</th>
-                            @endif
+                            @endcan
                         @endauth
                     </tr>
                     </thead>
@@ -63,18 +63,18 @@
                             <td>{{ number_format($offer->price, 2) }} KM</td>
 
                             @auth
-                                @if($service->ownerAndAdminCanView(auth()->id()))
+                                @can('view', $service)
                                     <td class="text-end">
                                         <a href="{{ route('serviceOffering.edit', $offer->id) }}" class="btn btn-outline-secondary btn-sm">Uredi</a>
                                         <a href="{{ route('serviceOffering.delete', $offer->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Obrisati ovu uslugu?')">Obriši</a>
                                     </td>
-                                @endif
+                                @endcan
                             @endauth
                         </tr>
                     @empty
                         <tr>
                             @php
-                                $colspan = $service->ownerAndAdminCanView(auth()->id() ?? null) ? 4 : 3;
+                                $colspan = auth()->check() && auth()->user()->can('view', $service) ? 4 : 3;
                             @endphp
                             <td colspan="{{ $colspan }}" class="text-center text-muted py-4">Nema definisanih usluga.</td>
                         </tr>
@@ -91,14 +91,14 @@
             <h2 class="h5 mb-0">Radno vrijeme</h2>
 
             @auth
-                @if ($service->ownerAndAdminCanView(auth()->id()))
+                @can('view', $service)
                     @if(count($service->working_hours ?? []) === 7)
                         <a href="{{ route('workingHours.edit', $service->id) }}" class="btn btn-sm btn-outline-primary">Izmijeni termine</a>
                     @else
                         <a href="{{ route('workingHours.add', $service->id) }}" class="btn btn-sm btn-primary">Dodaj termine</a>
                     @endif
                 @endif
-            @endauth
+            @endcan
         </div>
 
         <div class="card-body">
@@ -175,11 +175,11 @@
     </div>
 
     @auth
-        @if($service->ownerAndAdminCanView(auth()->id()))
+        @can('view', $service)
             <div class="d-flex justify-content-end mb-4">
                 <a href="{{ route('booking.show', $service->id) }}" class="btn btn-outline-secondary">Pogledaj rezervacije</a>
             </div>
-        @endif
+        @endcan
     @endauth
 
 @endsection

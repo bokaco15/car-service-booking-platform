@@ -10,7 +10,7 @@ use App\Http\Controllers\ServicePendingController;
 use App\Http\Controllers\WorkingHoursController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\OwnerAndAdminPermissionMiddleware;
-use App\Http\Middleware\ServiceOwnerMiddleware;
+use App\Http\Middleware\ServiceShowMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -78,7 +78,7 @@ Route::prefix('services')->group(function() {
 //all services/za admin crud
     Route::get('/all', [ServiceController::class, 'all'])->name('service.all');
 //show / mogu svi da vide
-    Route::get('/{service}', [ServiceController::class, 'show'])->name('service.show');
+    Route::get('/{service}', [ServiceController::class, 'show'])->name('service.show')->middleware(ServiceShowMiddleware::class);
 
 });
 

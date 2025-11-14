@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\ServiceStatus;
+use App\Enums\UserRole;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,13 +20,13 @@ class ServiceShowMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            if (auth()->user()->hasRole('admin')) {
+            if (auth()->user()->hasRole(UserRole::ADMIN)) {
                 return $next($request);
             }
         }
         if ($request->route('service')) {
             $service = $request->route('service');
-            if ($service->status == 'pending') abort(404, 'Error');
+            if ($service->status == ServiceStatus::PENDING) abort(404, 'Error');
         }
 
         return $next($request);

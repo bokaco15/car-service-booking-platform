@@ -50,6 +50,7 @@ class Service extends Model
         return $this->hasMany(Booking::class, 'service_id', 'id');
     }
 
+    /*
     public function ownerAndAdminCanView($user_id) : bool
     {
         if (($this->user_id == $user_id && auth()->user()->role == UserRole::SERVICE_OWNER) || auth()->user()->role == UserRole::ADMIN) {
@@ -57,5 +58,6 @@ class Service extends Model
         }
         return false;
     }
+    */
 
 }

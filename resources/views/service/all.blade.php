@@ -41,7 +41,7 @@
                             Prikaži
                         </a>
                         @auth
-                            @if($service->ownerAndAdminCanView(auth()->user()->id))
+                            @can('view', $service)
                                 <a href="{{ route('service.edit', ['service' => $service->id]) }}"
                                    class="btn btn-warning btn-sm">
                                     Ažuriraj
@@ -51,7 +51,7 @@
                                    onclick="return confirm('Da li sigurno želiš da obrišeš ovaj servis?')">
                                     Obriši
                                 </a>
-                            @endif
+                            @endcan
                         @endauth
                     </div>
                 </div>
