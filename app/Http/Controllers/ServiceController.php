@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ServiceStatus;
 use App\Enums\UserRole;
 use App\Http\Requests\ServiceAddRequest;
 use App\Models\Service;
@@ -32,13 +33,11 @@ class ServiceController extends Controller
 
     public function all(): View
     {
-        if (Auth::check()) {
-            if (Auth::user()->hasRole(UserRole::ADMIN)) {
-                $services = Service::paginate(10, '*', 'page');
-                return view('service.all', compact('services'));
-            }
+        if (Auth::check() && Auth::user()->hasRole(UserRole::ADMIN)) {
+            $services = Service::paginate(10, '*', 'page');
+            return view('service.all', compact('services'));
         }
-        $services = Service::where('status', 'approved')->paginate(10, '*', 'page');
+        $services = Service::where('status', ServiceStatus::APPROVED)->paginate(10, '*', 'page');
         return view('service.all', compact('services'));
     }
 

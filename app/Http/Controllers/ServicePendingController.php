@@ -14,7 +14,7 @@ class ServicePendingController extends Controller
 {
     public function index() : View
     {
-        $pendingServices = Service::where('status', 'pending')->paginate(10);
+        $pendingServices = Service::where('status', ServiceStatus::PENDING)->paginate(10);
         $pendingServicesCount = $pendingServices->total();
         return view('service.pending',  compact('pendingServices', 'pendingServicesCount'));
     }
