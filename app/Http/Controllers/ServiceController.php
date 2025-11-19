@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ServiceStatus;
+use App\Enums\UserRole;
 use App\Http\Requests\ServiceAddRequest;
 use App\Models\Service;
 use App\Repositories\SearchServiceRepository;
 use App\Repositories\ServiceRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
@@ -19,7 +23,7 @@ class ServiceController extends Controller
     public function add(ServiceAddRequest $request): RedirectResponse
     {
         $this->serviceRepo->addService($request);
-        return redirect()->back()->with('success', 'You have been added a service');
+        return redirect()->back()->with('success', 'You have been added a service, but your status is pending. Wait for administrator to approve your request');
     }
 
     public function show(Service $service): View
@@ -29,7 +33,11 @@ class ServiceController extends Controller
 
     public function all(): View
     {
-        $services = Service::paginate(10, '*', 'page');
+        if (Auth::check() && Auth::user()->hasRole(UserRole::ADMIN)) {
+            $services = Service::paginate(10, '*', 'page');
+            return view('service.all', compact('services'));
+        }
+        $services = Service::where('status', ServiceStatus::APPROVED)->paginate(10, '*', 'page');
         return view('service.all', compact('services'));
     }
 

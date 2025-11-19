@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <h3 class="h5 mb-4">
-        Uredi ponudu: <strong>{{ $offer->name }}</strong>
-        <span class="text-muted">– {{ $offer->service->name }}</span>
+        Uredi ponudu: <strong>{{ $service->name }}</strong>
+        <span class="text-muted">– {{ $service->service->name }}</span>
     </h3>
 
     @if(session('success'))
@@ -21,9 +21,9 @@
 
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <form action="{{ route('serviceOffering.update', $offer->id) }}" method="POST" class="row g-3">
+            <form action="{{ route('serviceOffering.update', $service->id) }}" method="POST" class="row g-3">
                 @csrf
-                <input type="hidden" name="service_id" value="{{ $offer->service->id }}">
+                <input type="hidden" name="service_id" value="{{ $service->service->id }}">
 
                 <div class="col-md-4">
                     <label for="name" class="form-label">Naziv ponude</label>
@@ -32,7 +32,7 @@
                            name="name"
                            class="form-control @error('name') is-invalid @enderror"
                            placeholder="Naziv ponude"
-                           value="{{ old('name', $offer->name) }}">
+                           value="{{ old('name', $service->name) }}">
                 </div>
 
                 <div class="col-md-4">
@@ -42,7 +42,7 @@
                            name="duration_minutes"
                            class="form-control @error('duration_minutes') is-invalid @enderror"
                            placeholder="npr. 60"
-                           value="{{ old('duration_minutes', $offer->duration_minutes) }}">
+                           value="{{ old('duration_minutes', $service->duration_minutes) }}">
                 </div>
 
                 <div class="col-md-3">
@@ -53,7 +53,7 @@
                            step="0.01"
                            class="form-control @error('price') is-invalid @enderror"
                            placeholder="npr. 50.00"
-                           value="{{ old('price', $offer->price) }}">
+                           value="{{ old('price', $service->price) }}">
                 </div>
 
                 <div class="col-md-1 d-flex align-items-end">

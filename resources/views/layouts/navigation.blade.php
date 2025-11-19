@@ -1,9 +1,6 @@
+@php use App\Enums\UserRole; @endphp
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
-            {{ config('app.name', 'Laravel') }}
-        </a>
 
         <!-- Hamburger (mobile) -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
@@ -15,20 +12,51 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                       href="{{ route('dashboard') }}">
-                        Dashboard
-                    </a>
-                </li>
-
                 {{-- Primer dodatnih linkova --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}"
+                    <a class="nav-link {{ request()->routeIs('service.all') ? 'active' : '' }}"
                        href="{{ route('service.all') }}">
                         Servisi
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('service.search.blade') ? 'active' : '' }}"
+                       href="{{ route('service.search.blade') }}">
+                        Pretrazi servise
+                    </a>
+                </li>
+                @auth
+                    @if(auth()->user()->hasRole(UserRole::ADMIN) || auth()->user()->hasRole(UserRole::SERVICE_OWNER))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('service.add') ? 'active' : '' }}"
+                               href="{{route('service.add')}}">
+                                Dodaj servise
+                            </a>
+                        </li>
+                    @endif
+                    @if (auth()->user()->hasRole(UserRole::SERVICE_OWNER))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('owner.services') ? 'active' : '' }}"
+                                   href="{{route('owner.services')}}">
+                                    Moji servisi
+                                </a>
+                            </li>
+                    @endif
+                    @if(auth()->user()->hasRole(UserRole::ADMIN))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('service.pending') ? 'active' : '' }}"
+                                   href="{{route('service.pending')}}">
+                                    Servisi na cekanju
+                                </a>
+                            </li>
+                    @endif
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('booking.my') ? 'active' : '' }}"
+                               href="{{route('booking.my')}}">
+                                Rezervacije
+                            </a>
+                        </li>
+                @endauth
             </ul>
 
             <!-- Right dropdown (user menu) -->

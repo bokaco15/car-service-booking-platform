@@ -58,4 +58,11 @@ class BookingController extends Controller
         return redirect()->route('booking.show', $booking->service->id)->with('delete-success', 'You have been successfuly delete booking');
     }
 
+    public function myReservations()
+    {
+        $bookings = Booking::with('service', 'serviceOffering', 'client')->where('client_id', Auth::user()->id)->get();
+        return view('booking.my', compact('bookings'));
+    }
+
+
 }

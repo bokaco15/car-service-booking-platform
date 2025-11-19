@@ -2,6 +2,8 @@
 @extends('layouts.app')
 
 @section('content')
+{{--    @dd($booking->service)--}}
+{{--@dd($booking->service->user_id)--}}
     <div class="card p-4 shadow-sm">
         <h1 class="h4 mb-4">Ažuriraj status narudžbe za: <strong>{{ $booking->serviceOffering->name }}</strong></h1>
 
